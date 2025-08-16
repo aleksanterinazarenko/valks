@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Open Dictionary of Erzya language. Editable by everyone">
+<meta name="keywords" content="Erzya, Erzya language, Erzya dictionary, эрзянь кель, эрзянь валкс">
+<title>Панжадо эрзянь валкс</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1><a href="index.html">Панжадо эрзянь валкс</a></h1>
+    <div style="margin-top: 50px; margin-bottom: 50px;">
+      <button id="toggleFormBtn">Од сёрмадовкс</button>
+    </div>
+
+    <form id="entryForm" class="hidden">
+      <input type="text" id="word" placeholder="Валось" required />
+      <input type="text" id="pronunciation" placeholder="Ёвтамо койть (IPA)">
+      <select id="partOfSpeech" required>
+        <option value="">Кортамо пельксэнь кочкамо</option>
+        <option value="Noun">Лемвал</option>
+        <option value="Verb">Теввал</option>
+        <option value="Adjective">Лемтюс</option>
+        <option value="Adverb">Малавал</option>
+        <option value="Conjunction">Сюлмавкс</option>
+        <option value="Particle">Пелькске</option>
+        <option value="Interjection">Ютковал</option>
+        <option value="Other">Лия</option>
+      </select>
+
+      <div id="meaningsContainer"></div>
+
+      <button type="button" id="addMeaningBtn">Лия смустень поладома</button>
+      <button type="button" id="deleteMeaningBtn" class="hidden">Смустень нардамо</button>
+
+      <textarea id="etymology" placeholder="Валонть этимологиязо"></textarea>
+      <textarea id="source" placeholder="Лисьмапрятне" required></textarea>
+
+      <button type="submit">Таштамо</button>
+    </form>
+
+    <div id="entriesSection">
+      <input type="text" id="searchInput" placeholder="Валонь вешнема" />
+      <ul id="entriesList"></ul>
+    </div>
+  </div>
+
+  <footer>
+      <a href="mailto:aleksanterinazarenko@outlook.com">&copy; 2025 Aleksanteri Nazarenko</a>
+  </footer>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>

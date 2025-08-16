@@ -1,0 +1,365 @@
+@import url('https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400..700;1,400..700&display=swap');
+
+@font-face {
+    font-family: 'CMU Sans Serif';
+    src: url('CMU Sans Serif.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html {
+  overflow-y: scroll;
+}
+
+body {
+    font-family: "Brygada 1918", serif;
+    background: #fff;
+    padding: 30px;
+    color: #333;
+  }
+
+  .container {
+    max-width: 850px;
+    margin: auto;
+    padding: 60px;
+  }
+
+  h1 {
+    font-size: 32px;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  h1 a {
+    text-decoration: none;
+    color: #333;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 20px;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 17px;
+    font-family: "Brygada 1918", serif;
+    border: 1px solid #333;
+    border-radius: 6px;
+    background: #fff;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  textarea {
+  resize: none;
+}
+
+  input:focus, textarea:focus, select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.2);
+    background: #fff;
+  }
+
+  .definition, .examples {
+    min-height: 100px;
+    resize: none;
+  }
+
+  #source {
+  margin-bottom: 20px;
+  min-height: 100px;
+}
+
+  button {
+    font-family: "Brygada 1918", serif;
+    font-size: 17px;
+    padding: 10px 15px;
+    background: none;
+    color: #333;
+    border: 1px solid #333;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    align-self: flex-start;
+  }
+
+  .entry-margin-top button {
+    margin-right: 10px;
+  }
+  .entry-margin-top button:last-child {
+    margin-right: 0;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .meaning-group {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 6px;
+    border: 1px solid #333;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 30px;
+  }
+
+  li {
+    border: 1px solid #333;
+    padding: 24px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    background: #fff;
+  }
+
+  .entry-header {
+    cursor: pointer;
+    font-weight: 700;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    font-size: 17px;
+  }
+
+  .part-of-speech {
+    font-style: italic;
+    font-weight: normal;
+    text-transform: lowercase;
+    color: #28a745;
+    font-size: 17px;
+  }
+
+  .entry-article {
+  margin-top: 10px;
+  font-size: 17px;
+}
+
+.pronunciation {
+  font-family: "CMU Sans Serif", sans-serif;
+  font-weight: normal;
+  color: #666;
+  font-size: 17px;
+}
+
+  .entry-definition {
+    margin: 20px 0;
+    line-height: 1.6;
+    font-size: 17px;
+  }
+
+  .entry-examples {
+    margin: 10px;
+    font-size: 17px;
+    color: grey;
+  }
+  
+    .entry-etymology {
+        margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 17px;
+  }
+
+  .etymology-text {
+  color: gray;
+}
+
+  .entry-sources {
+    margin-top: 10px;
+    font-size: 17px;
+    color: gray;
+  }
+
+  .entry-margin-top {
+  margin-top: 20px;
+}
+
+  .entry-sources li {
+    border: none;
+    padding: 4px 0;
+  }
+
+  .entry-translations {
+    margin-top: 10px;
+  }
+
+  .entry-translations li {
+    border: none;
+    margin-top: 20px;
+    margin-left: 20px;
+    padding: 0;
+  }
+
+  #searchInput {
+    margin-bottom: 24px;
+    width: 100%;
+    font-size: 17px;
+  }
+
+  #toggleFormBtn {
+    margin-top: 10px;
+  }
+
+  #addMeaningBtn {
+    margin-top: -20px;
+  }
+
+  select {
+    width: 100%;
+    font-size: 17px;
+  }
+
+  footer {
+    text-align: center;
+    align-items: center;
+    padding: 10px 0;
+    width: 100%;
+    margin-top: 30px;
+    font-size: 17px;
+}
+
+footer a {
+  color: #333;
+  text-decoration: none;
+}
+
+.loading-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  font-style: italic;
+  font-size: 18px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  
+  body {
+    padding: 20px;
+    font-size: 17px;
+    background: white;
+  }
+
+  .container {
+    padding: 0;
+    background: none;
+  }
+
+  h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+
+  form {
+    gap: 16px;
+  }
+
+  input, select, textarea {
+    padding: 12px 14px;
+    font-size: 17px;
+  }
+
+  button {
+    padding: 10px 16px;
+    font-size: 17px;
+  }
+
+  .entry-header {
+    font-size: 17px;
+    gap: 8px;
+  }
+
+  .entry-definition {
+    font-size: 17px;
+    line-height: 1.4;
+    margin-bottom: 16px;
+  }
+
+  .entry-sources {
+    font-size: 17px;
+  }
+
+  .entry-etymology {
+    font-size: 17px;
+  }
+
+  .entry-examples em {
+    font-size: 17px;
+  }
+
+  .entry-sources li {
+    padding: 2px 0;
+  }
+
+  .meaning-group {
+    padding: 16px;
+  }
+
+  hr {
+    margin: 16px 0;
+  }
+
+  input:focus, textarea:focus, select:focus {
+    border-color: #0056b3;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.2);
+  }
+
+  li {
+    padding: 16px;
+  }
+
+  .entry-article {
+    margin-top: 8px;
+  }
+
+  .entry-margin-top {
+    margin-top: 16px;
+  }
+
+  .entry-etymology {
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+
+  ul li {
+    padding: 12px;
+    font-size: 17px;
+  }
+
+  #searchInput {
+    margin-bottom: 20px;
+  }
+
+  #toggleFormBtn {
+    margin-top: 8px;
+  }
+
+  .entry-translations li {
+    margin-top: 18px;
+  }
+
+  .part-of-speech {
+    font-size: 17px;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  form {
+    gap: 12px;
+  }
+}
