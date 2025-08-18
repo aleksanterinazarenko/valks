@@ -96,7 +96,7 @@ body {
   }
 
   .hidden {
-    display: none;
+    display: none !important;
   }
 
   .meaning-group {
@@ -362,4 +362,5 @@ footer a {
   form {
     gap: 12px;
   }
+
 }
