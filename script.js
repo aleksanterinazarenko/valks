@@ -150,9 +150,9 @@ function deleteMeaningField(meaningGroup) {
 function renderEntries() {
   const dictionaryRef = ref(db, 'dictionary');
 
-entriesList.innerHTML = `
-  <span class="loading-message">Тарган сёрмадовкст...</span>
-`;
+  document.getElementById('loadingMessage').classList.remove('hidden');
+  document.getElementById('emptyMessage').classList.add('hidden');
+  entriesList.innerHTML = '';
 
   onValue(dictionaryRef, (snapshot) => {
     const entries = [];
@@ -163,15 +163,32 @@ entriesList.innerHTML = `
 
     entries.sort((a, b) => a.word.localeCompare(b.word));
 
+    // Piilota latausviesti
+    document.getElementById('loadingMessage').classList.add('hidden');
+
+    if (entries.length === 0) {
+      document.getElementById('emptyMessage').classList.remove('hidden');
+    } else {
+      document.getElementById('emptyMessage').classList.add('hidden');
+    }
+
     displayEntries(entries);
 
-document.getElementById('searchInput').addEventListener('input', (e) => {
-  const searchValue = e.target.value.toLowerCase();
-  const filtered = entries
-    .filter(ent => ent.word.toLowerCase().includes(searchValue))
-    .sort((a, b) => a.word.localeCompare(b.word));
-  displayEntries(filtered);
-});
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      const searchValue = e.target.value.toLowerCase();
+      const filtered = entries
+        .filter(ent => ent.word.toLowerCase().includes(searchValue))
+        .sort((a, b) => a.word.localeCompare(b.word));
+
+      entriesList.innerHTML = '';
+
+      if (filtered.length === 0) {
+        document.getElementById('emptyMessage').classList.remove('hidden');
+      } else {
+        document.getElementById('emptyMessage').classList.add('hidden');
+        displayEntries(filtered);
+      }
+    });
   });
 }
 
