@@ -150,9 +150,9 @@ function deleteMeaningField(meaningGroup) {
 function renderEntries() {
   const dictionaryRef = ref(db, 'dictionary');
 
-entriesList.innerHTML = `
-  <span class="loading-message">Тарган сёрмадовкст...</span>
-`;
+  document.getElementById('noEntriesMessage').textContent = 'Тарган сёрмадовкст...';
+  document.getElementById('noEntriesMessage').classList.remove('hidden');
+  entriesList.innerHTML = '';
 
   onValue(dictionaryRef, (snapshot) => {
     const entries = [];
@@ -163,22 +163,36 @@ entriesList.innerHTML = `
 
     entries.sort((a, b) => a.word.localeCompare(b.word));
 
+    // Piilota viesti jos löytyi merkintöjä
+    if (entries.length > 0) {
+      document.getElementById('noEntriesMessage').classList.add('hidden');
+    } else {
+      document.getElementById('noEntriesMessage').textContent = 'Мезеяк эзь муеве.';
+      document.getElementById('noEntriesMessage').classList.remove('hidden');
+    }
+
     displayEntries(entries);
 
-document.getElementById('searchInput').addEventListener('input', (e) => {
-  const searchValue = e.target.value.toLowerCase();
-  const filtered = entries
-    .filter(ent => ent.word.toLowerCase().includes(searchValue))
-    .sort((a, b) => a.word.localeCompare(b.word));
-  displayEntries(filtered);
-});
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      const searchValue = e.target.value.toLowerCase();
+      const filtered = entries
+        .filter(ent => ent.word.toLowerCase().includes(searchValue))
+        .sort((a, b) => a.word.localeCompare(b.word));
+
+      if (filtered.length === 0) {
+        document.getElementById('noEntriesMessage').textContent = 'Мезеяк эзь муеве.';
+        document.getElementById('noEntriesMessage').classList.remove('hidden');
+      } else {
+        document.getElementById('noEntriesMessage').classList.add('hidden');
+      }
+
+      displayEntries(filtered);
+    });
   });
 }
 
 function displayEntries(entries) {
   console.log('Displaying entries:', entries);
-
-  entriesList.innerHTML = '';
 
   entries.forEach(entry => {
     const li = document.createElement('li');
@@ -308,4 +322,5 @@ window.editEntry = function (key) {
 };
 
 renderEntries();
+
 addMeaningField();
