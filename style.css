@@ -182,6 +182,10 @@ body {
     color: gray;
   }
 
+    .entry-sources li {
+    margin-bottom: 10px;
+  }
+
   .entry-margin-top {
   margin-top: 20px;
 }
@@ -226,7 +230,7 @@ body {
     align-items: center;
     padding: 10px 0;
     width: 100%;
-    margin-top: 30px;
+    margin-top: 50px;
     font-size: 17px;
 }
 
