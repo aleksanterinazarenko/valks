@@ -16,6 +16,17 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
+  const partOfSpeechTranslations = {
+  Noun: "Лемвал",
+  Verb: "Теввал",
+  Adjective: "Лемтюс",
+  Adverb: "Малавал",
+  Conjunction: "Сюлмавкс",
+  Particle: "Пелькске",
+  Interjection: "Ютковал",
+  Other: "Лия"
+};
+
 const form = document.getElementById('entryForm');
 const toggleFormBtn = document.getElementById('toggleFormBtn');
 const addMeaningBtn = document.getElementById('addMeaningBtn');
@@ -163,7 +174,6 @@ function renderEntries() {
 
     entries.sort((a, b) => a.word.localeCompare(b.word));
 
-    // Piilota latausviesti
     document.getElementById('loadingMessage').classList.add('hidden');
 
     if (entries.length === 0) {
@@ -204,7 +214,9 @@ function displayEntries(entries) {
       <div class="entry-header" onclick="toggleArticle('${articleId}')">
         <span>${entry.word}</span>
 
-        <span class="part-of-speech">${entry.partOfSpeech}</span>
+        <span class="part-of-speech">
+      ${partOfSpeechTranslations[entry.partOfSpeech] || entry.partOfSpeech}
+        </span>
       </div>
       <div id="${articleId}" class="hidden entry-article">
 
