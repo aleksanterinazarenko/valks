@@ -210,7 +210,7 @@ function renderEntries() {
 
 function displayPaginatedEntries(entries = allEntries) {
   const pagination = document.getElementById('paginationControls');
-  
+
   const totalPages = Math.ceil(entries.length / entriesPerPage);
   const startIndex = (currentPage - 1) * entriesPerPage;
   const currentEntries = entries.slice(startIndex, startIndex + entriesPerPage);
@@ -227,7 +227,10 @@ function displayPaginatedEntries(entries = allEntries) {
 
   displayEntries(currentEntries);
 
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
 
   if (entries.length > entriesPerPage) {
     pagination.classList.remove('hidden');
@@ -345,6 +348,7 @@ window.toggleArticle = function (id) {
 function toggleForm(show) {
   form.classList.toggle('hidden', !show);
   document.getElementById('entriesSection').classList.toggle('hidden', show);
+  document.getElementById('paginationControls').classList.toggle('hidden', show);
 
   if (!show) {
     form.reset();
