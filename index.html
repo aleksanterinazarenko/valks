@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Open Dictionary of Erzya language. Editable by everyone">
-<meta name="keywords" content="Erzya, Erzya language, Erzya dictionary, эрзянь кель, эрзянь валкс">
-<title>Панжадо эрзянь валкс</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Open Dictionary of Erzya language. Editable by everyone">
+  <meta name="keywords" content="Erzya, Erzya language, Erzya dictionary, эрзянь кель, эрзянь валкс">
+  <title>Панжадо эрзянь валкс</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <div class="container">
     <h1><a href="index.html">Панжадо эрзянь валкс</a></h1>
-    <div style="margin-top: 50px; margin-bottom: 50px;">
+    <div class="button-group">
+      <button type="button"><a href="lat.html">LAT</a></button>
       <button id="toggleFormBtn">Од сёрмадовкс</button>
     </div>
 
@@ -41,26 +44,26 @@
       <button type="submit">Таштамо</button>
     </form>
 
-<div id="entriesSection">
-  <input type="text" id="searchInput" placeholder="Валонь вешнема" />
-  <ul id="entriesList"></ul>
-  
-  <div id="loadingMessage" class="loading-message">Тарган сёрмадовкст...</div>
+    <div id="entriesSection">
+      <input type="text" id="searchInput" placeholder="Валонь вешнема" />
+      <ul id="entriesList"></ul>
 
-  <div id="emptyMessage" class="loading-message hidden">Мезеяк эзь муеве.</div>
-</div>
+      <div id="loadingMessage" class="loading-message">Тарган сёрмадовкст...</div>
 
-<div id="paginationControls" class="hidden">
-  <button id="prevPageBtn">← Мекев</button>
-  <span id="pageInfo"></span>
-  <button id="nextPageBtn">Икелев →</button>
-</div>
+      <div id="emptyMessage" class="loading-message hidden">Мезеяк эзь муеве.</div>
+    </div>
 
-  <footer>
+    <div id="paginationControls" class="hidden">
+      <button id="prevPageBtn">← Мекев</button>
+      <span id="pageInfo"></span>
+      <button id="nextPageBtn">Икелев →</button>
+    </div>
+
+    <footer>
       <a href="mailto:aleksanterinazarenko@outlook.com">&copy; 2025 Aleksanteri Nazarenko</a>
-  </footer>
+    </footer>
 
-<script type="module" src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 
 </html>
