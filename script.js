@@ -1,6 +1,13 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
 import {
-  getDatabase, ref, push, onValue, remove, update
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+import {
+  getDatabase,
+  ref,
+  push,
+  onValue,
+  remove,
+  update
 } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
 
 const firebaseConfig = {
@@ -16,7 +23,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-  const partOfSpeechTranslations = {
+const partOfSpeechTranslations = {
   Noun: "Лемвал",
   Verb: "Теввал",
   Adjective: "Лемтюс",
@@ -34,6 +41,9 @@ const meaningsContainer = document.getElementById('meaningsContainer');
 const entriesList = document.getElementById('entriesList');
 
 let editingKey = null;
+let allEntries = [];
+let currentPage = 1;
+const entriesPerPage = 20;
 
 toggleFormBtn.addEventListener('click', () => {
   const isFormVisible = !form.classList.contains('hidden');
@@ -56,30 +66,30 @@ form.addEventListener('submit', async (e) => {
     .filter(s => s);
 
   const definitions = {};
-document.querySelectorAll('.meaning-group').forEach((group, index) => {
-  const def = group.querySelector('.definition').value.trim();
-  if (!def) return;
+  document.querySelectorAll('.meaning-group').forEach((group, index) => {
+    const def = group.querySelector('.definition').value.trim();
+    if (!def) return;
 
-  const examples = group.querySelector('.examples').value
-    .split('\n')
-    .map(e => e.trim())
-    .filter(e => e);
-  const synonyms = group.querySelector('.synonyms').value
-    .split(',')
-    .map(s => s.trim())
-    .filter(s => s);
-  const antonyms = group.querySelector('.antonyms').value
-    .split(',')
-    .map(a => a.trim())
-    .filter(a => a);
+    const examples = group.querySelector('.examples').value
+      .split('\n')
+      .map(e => e.trim())
+      .filter(e => e);
+    const synonyms = group.querySelector('.synonyms').value
+      .split(',')
+      .map(s => s.trim())
+      .filter(s => s);
+    const antonyms = group.querySelector('.antonyms').value
+      .split(',')
+      .map(a => a.trim())
+      .filter(a => a);
 
-  definitions[`def_${index + 1}`] = {
-    definition: def,
-    examples: examples.length > 0 ? examples : ['?'],
-    synonyms: synonyms.length > 0 ? synonyms : ['?'],
-    antonyms: antonyms.length > 0 ? antonyms : ['?'],
-  };
-});
+    definitions[`def_${index + 1}`] = {
+      definition: def,
+      examples: examples.length > 0 ? examples : ['?'],
+      synonyms: synonyms.length > 0 ? synonyms : ['?'],
+      antonyms: antonyms.length > 0 ? antonyms : ['?'],
+    };
+  });
 
   const entryData = {
     word,
@@ -166,41 +176,87 @@ function renderEntries() {
   entriesList.innerHTML = '';
 
   onValue(dictionaryRef, (snapshot) => {
-    const entries = [];
+    allEntries = [];
     snapshot.forEach((child) => {
       const entry = child.val();
-      entries.push({ key: child.key, ...entry });
+      allEntries.push({
+        key: child.key,
+        ...entry
+      });
     });
 
-    entries.sort((a, b) => a.word.localeCompare(b.word));
+    allEntries.sort((a, b) => a.word.localeCompare(b.word));
 
     document.getElementById('loadingMessage').classList.add('hidden');
 
-    if (entries.length === 0) {
+    if (allEntries.length === 0) {
       document.getElementById('emptyMessage').classList.remove('hidden');
+      document.getElementById('paginationControls').classList.add('hidden');
     } else {
       document.getElementById('emptyMessage').classList.add('hidden');
+      currentPage = 1;
+      displayPaginatedEntries();
     }
-
-    displayEntries(entries);
 
     document.getElementById('searchInput').addEventListener('input', (e) => {
       const searchValue = e.target.value.toLowerCase();
-      const filtered = entries
-        .filter(ent => ent.word.toLowerCase().includes(searchValue))
-        .sort((a, b) => a.word.localeCompare(b.word));
+      const filtered = allEntries.filter(ent => ent.word.toLowerCase().includes(searchValue));
 
-      entriesList.innerHTML = '';
-
-      if (filtered.length === 0) {
-        document.getElementById('emptyMessage').classList.remove('hidden');
-      } else {
-        document.getElementById('emptyMessage').classList.add('hidden');
-        displayEntries(filtered);
-      }
+      currentPage = 1;
+      displayPaginatedEntries(filtered);
     });
   });
 }
+
+function displayPaginatedEntries(entries = allEntries) {
+  const pagination = document.getElementById('paginationControls');
+  
+  const totalPages = Math.ceil(entries.length / entriesPerPage);
+  const startIndex = (currentPage - 1) * entriesPerPage;
+  const currentEntries = entries.slice(startIndex, startIndex + entriesPerPage);
+
+  entriesList.innerHTML = '';
+
+  if (currentEntries.length === 0) {
+    document.getElementById('emptyMessage').classList.remove('hidden');
+    pagination.classList.add('hidden');
+    return;
+  } else {
+    document.getElementById('emptyMessage').classList.add('hidden');
+  }
+
+  displayEntries(currentEntries);
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (entries.length > entriesPerPage) {
+    pagination.classList.remove('hidden');
+    document.getElementById('pageInfo').textContent = `${currentPage} / ${totalPages}`;
+    document.getElementById('prevPageBtn').disabled = currentPage === 1;
+    document.getElementById('nextPageBtn').disabled = currentPage === totalPages;
+  } else {
+    pagination.classList.add('hidden');
+  }
+
+  pagination.dataset.entries = JSON.stringify(entries);
+}
+
+document.getElementById('prevPageBtn').addEventListener('click', () => {
+  const entries = JSON.parse(document.getElementById('paginationControls').dataset.entries || '[]') || allEntries;
+  if (currentPage > 1) {
+    currentPage--;
+    displayPaginatedEntries(entries);
+  }
+});
+
+document.getElementById('nextPageBtn').addEventListener('click', () => {
+  const entries = JSON.parse(document.getElementById('paginationControls').dataset.entries || '[]') || allEntries;
+  const totalPages = Math.ceil(entries.length / entriesPerPage);
+  if (currentPage < totalPages) {
+    currentPage++;
+    displayPaginatedEntries(entries);
+  }
+});
 
 function displayEntries(entries) {
   console.log('Displaying entries:', entries);
@@ -276,7 +332,7 @@ function displayEntries(entries) {
         </div>
       </div>
     `;
-    
+
     entriesList.appendChild(li);
   });
 }
@@ -319,18 +375,18 @@ window.editEntry = function (key) {
     meaningsContainer.innerHTML = '';
 
     Object.entries(entry.definitions).forEach(([key, def]) => {
-  addMeaningField(
-    def.definition || '',
-    def.examples && def.examples[0] !== '?' ? def.examples : [],
-    def.synonyms && def.synonyms[0] !== '?' ? def.synonyms.join(', ') : '',
-    def.antonyms && def.antonyms[0] !== '?' ? def.antonyms.join(', ') : ''
-  );
-});
+      addMeaningField(
+        def.definition || '',
+        def.examples && def.examples[0] !== '?' ? def.examples : [],
+        def.synonyms && def.synonyms[0] !== '?' ? def.synonyms.join(', ') : '',
+        def.antonyms && def.antonyms[0] !== '?' ? def.antonyms.join(', ') : ''
+      );
+    });
 
     toggleForm(true);
     editingKey = key;
 
-  toggleFormBtn.textContent = 'Мекев';
+    toggleFormBtn.textContent = 'Мекев';
   }, {
     onlyOnce: true
   });
