@@ -25,10 +25,12 @@ const db = getDatabase(app);
 
 const partOfSpeechTranslations = {
   Noun: "Лемвал",
+  Pronoun: "Чачонь лиялем",
+  Numeral: "Ловомалем",
   Verb: "Теввал",
   Adjective: "Лемтюс",
   Adverb: "Малавал",
-  Conjunction: "Сюлмавкс",
+  Conjunction: "Сюлмиця вал",
   Particle: "Пелькске",
   Interjection: "Ютковал",
   Other: "Лия"
@@ -200,7 +202,24 @@ function renderEntries() {
 
     document.getElementById('searchInput').addEventListener('input', (e) => {
       const searchValue = e.target.value.toLowerCase();
-      const filtered = allEntries.filter(ent => ent.word.toLowerCase().includes(searchValue));
+      const filtered = allEntries.filter(ent => {
+        const word = ent.word.toLowerCase();
+        const query = searchValue.toLowerCase();
+
+        const wordLat = window.transliterate ?
+          window.transliterate(ent.word).toLowerCase() :
+          '';
+
+        const queryLat = window.transliterate ?
+          window.transliterate(searchValue).toLowerCase() :
+          '';
+
+        return (
+          word.includes(query) ||
+          wordLat.includes(query) ||
+          wordLat.includes(queryLat)
+        );
+      });
 
       currentPage = 1;
       displayPaginatedEntries(filtered);
