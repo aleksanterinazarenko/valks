@@ -241,6 +241,7 @@ footer a {
   font-style: italic;
   font-size: 18px;
   text-align: center;
+  margin-top: 50px;
 }
 
 @media (max-width: 768px) {
