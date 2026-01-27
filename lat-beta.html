@@ -177,7 +177,7 @@
             function transliterate(text) {
                 const spaceBefore = text.startsWith(' ');
                 const spaceAfter = text.endsWith(' ');
-                text = text.trim();
+                text = " " + text + " ";
 
                 for (const [key, value] of Object.entries(palatals)) {
                     const regexVowel = new RegExp(key + 'ь([аеёиоуыэюяАЕЁИОУЫЭЮЯ])', 'g');
