@@ -210,16 +210,41 @@ li {
   background: #fff;
 }
 
+#pageInput {
+  width: 60px;
+  padding: 8px 10px;
+  margin: 0 10px;
+  border: 1px solid #333;
+  border-radius: 6px;
+  text-align: center;
+  font-family: inherit;
+  font-size: inherit;
+  background: #fff;
+  -moz-appearance: textfield;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+#pageInput::-webkit-inner-spin-button,
+#pageInput::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 #paginationControls {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
   margin: 30px 0;
 }
 
 #paginationControls button {
   padding: 8px 14px;
+}
+
+#pageInfo {
+  margin: 0 10px 0 0;
 }
 
 footer {
@@ -253,9 +278,12 @@ footer a {
     font-size: 28px;
   }
 
-  input:focus,
-  textarea:focus,
-  select:focus {
-    border-color: #0056b3;
+  #paginationControls button::after {
+    content: attr(data-short);
+    display: block;
+  }
+
+  #paginationControls button span {
+    display: none;
   }
 }

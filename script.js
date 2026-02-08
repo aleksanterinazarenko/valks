@@ -46,6 +46,88 @@ let editingKey = null;
 let allEntries = [];
 let currentPage = 1;
 const entriesPerPage = 20;
+let totalPages = 1;
+let currentEntries = [];
+
+document.addEventListener('DOMContentLoaded', () => {
+  setupPagination();
+});
+
+function setupPagination() {
+  const pageInput = document.getElementById('pageInput');
+  const prevBtn = document.getElementById('prevPageBtn');
+  const nextBtn = document.getElementById('nextPageBtn');
+
+  if (pageInput) {
+    pageInput.addEventListener('change', function () {
+      const page = parseInt(this.value);
+      if (page >= 1 && page <= totalPages) {
+        currentPage = page;
+        displayPaginatedEntries(currentEntries);
+      } else {
+        this.value = currentPage;
+        alert(`Лопанень улема 1-${totalPages} ютксо`);
+      }
+    });
+
+    pageInput.addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        this.blur();
+        const page = parseInt(this.value);
+        if (page >= 1 && page <= totalPages) {
+          currentPage = page;
+          displayPaginatedEntries(currentEntries);
+        } else {
+          this.value = currentPage;
+          alert(`Лопанень улема 1-${totalPages} ютксо`);
+        }
+      }
+    });
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', function () {
+      if (currentPage > 1) {
+        currentPage--;
+        displayPaginatedEntries(currentEntries);
+      }
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', function () {
+      if (currentPage < totalPages) {
+        currentPage++;
+        displayPaginatedEntries(currentEntries);
+      }
+    });
+  }
+}
+
+function updatePagination() {
+  const pageInput = document.getElementById('pageInput');
+  const pageInfo = document.getElementById('pageInfo');
+  const prevBtn = document.getElementById('prevPageBtn');
+  const nextBtn = document.getElementById('nextPageBtn');
+
+  if (pageInput) {
+    pageInput.value = currentPage;
+    pageInput.max = totalPages;
+    pageInput.min = 1;
+  }
+
+  if (pageInfo) {
+    pageInfo.textContent = ` / ${totalPages}`;
+  }
+
+  if (prevBtn) {
+    prevBtn.disabled = currentPage <= 1;
+  }
+
+  if (nextBtn) {
+    nextBtn.disabled = currentPage >= totalPages;
+  }
+}
 
 toggleFormBtn.addEventListener('click', () => {
   const isFormVisible = !form.classList.contains('hidden');
@@ -197,7 +279,8 @@ function renderEntries() {
     } else {
       document.getElementById('emptyMessage').classList.add('hidden');
       currentPage = 1;
-      displayPaginatedEntries();
+      currentEntries = allEntries;
+      displayPaginatedEntries(allEntries);
     }
 
     document.getElementById('searchInput').addEventListener('input', (e) => {
@@ -222,6 +305,7 @@ function renderEntries() {
       });
 
       currentPage = 1;
+      currentEntries = filtered;
       displayPaginatedEntries(filtered);
     });
   });
@@ -230,13 +314,19 @@ function renderEntries() {
 function displayPaginatedEntries(entries = allEntries) {
   const pagination = document.getElementById('paginationControls');
 
-  const totalPages = Math.ceil(entries.length / entriesPerPage);
+  totalPages = Math.ceil(entries.length / entriesPerPage);
+  currentEntries = entries;
+
+  if (currentPage > totalPages && totalPages > 0) {
+    currentPage = totalPages;
+  }
+
   const startIndex = (currentPage - 1) * entriesPerPage;
-  const currentEntries = entries.slice(startIndex, startIndex + entriesPerPage);
+  const pageEntries = entries.slice(startIndex, startIndex + entriesPerPage);
 
   entriesList.innerHTML = '';
 
-  if (currentEntries.length === 0) {
+  if (pageEntries.length === 0) {
     document.getElementById('emptyMessage').classList.remove('hidden');
     pagination.classList.add('hidden');
     return;
@@ -244,7 +334,7 @@ function displayPaginatedEntries(entries = allEntries) {
     document.getElementById('emptyMessage').classList.add('hidden');
   }
 
-  displayEntries(currentEntries);
+  displayEntries(pageEntries);
 
   window.scrollTo({
     top: 0,
@@ -253,32 +343,13 @@ function displayPaginatedEntries(entries = allEntries) {
 
   if (entries.length > entriesPerPage) {
     pagination.classList.remove('hidden');
-    document.getElementById('pageInfo').textContent = `${currentPage} / ${totalPages}`;
-    document.getElementById('prevPageBtn').disabled = currentPage === 1;
-    document.getElementById('nextPageBtn').disabled = currentPage === totalPages;
+    updatePagination();
   } else {
     pagination.classList.add('hidden');
   }
 
   pagination.dataset.entries = JSON.stringify(entries);
 }
-
-document.getElementById('prevPageBtn').addEventListener('click', () => {
-  const entries = JSON.parse(document.getElementById('paginationControls').dataset.entries || '[]') || allEntries;
-  if (currentPage > 1) {
-    currentPage--;
-    displayPaginatedEntries(entries);
-  }
-});
-
-document.getElementById('nextPageBtn').addEventListener('click', () => {
-  const entries = JSON.parse(document.getElementById('paginationControls').dataset.entries || '[]') || allEntries;
-  const totalPages = Math.ceil(entries.length / entriesPerPage);
-  if (currentPage < totalPages) {
-    currentPage++;
-    displayPaginatedEntries(entries);
-  }
-});
 
 function displayEntries(entries) {
   console.log('Displaying entries:', entries);
